@@ -33,43 +33,42 @@ You do not need to install Python yourself. `uv` gets Python 3.12 for the projec
 
 ## Installation
 
-1. Clone the repository:
+### Option A: one command (recommended)
+
+```bash
+uv tool install git+https://github.com/liorderei-upwind/iterm-agents-hub
+uv tool update-shell        # only once: adds ~/.local/bin to your PATH
+```
+
+Open a new iTerm tab and type `agents`.
+
+- Update: `uv tool upgrade agents-hub`
+- Install a fixed version: `uv tool install git+https://github.com/liorderei-upwind/iterm-agents-hub@v0.1.0`
+- Uninstall: `uv tool uninstall agents-hub && rm -rf ~/.cache/agents-hub`
+
+### Option B: clone (to change the code)
+
+1. Clone the repository and run the install script:
    ```bash
    git clone https://github.com/liorderei-upwind/iterm-agents-hub.git ~/git/iterm-agents-hub
-   cd ~/git/iterm-agents-hub
-   ```
-2. Run the install script:
-   ```bash
-   ./install.sh
+   cd ~/git/iterm-agents-hub && ./install.sh
    ```
    The script creates a virtual environment in `.venv` and puts a link at `~/bin/agents`.
-3. Make sure that `~/bin` is on your `PATH`. If it is not, add this line to `~/.zshrc` and open a new tab:
+2. Make sure that `~/bin` is on your `PATH`. If it is not, add this line to `~/.zshrc` and open a new tab:
    ```bash
    export PATH="$HOME/bin:$PATH"
    ```
-4. Open a new iTerm tab and type:
-   ```bash
-   agents
-   ```
-5. The first time, macOS asks if your terminal can control iTerm2. Click **Allow**. If you clicked **Don't Allow**, go to **System Settings → Privacy & Security → Automation** and turn on **iTerm2** for your terminal.
+3. Open a new iTerm tab and type `agents`.
 
-The first start reads all your session files and builds an index. This can take 5–10 seconds. Later starts take less than a second.
+- Update: `cd ~/git/iterm-agents-hub && git pull && ./install.sh`
+- Uninstall: `rm ~/bin/agents && rm -rf ~/.cache/agents-hub ~/git/iterm-agents-hub`
 
-### Update
+### First start
 
-```bash
-cd ~/git/iterm-agents-hub && git pull && ./install.sh
-```
+- macOS asks if your terminal can control iTerm2. Click **Allow**. If you clicked **Don't Allow**, go to **System Settings → Privacy & Security → Automation** and turn on **iTerm2** for your terminal.
+- The first start reads all your session files and builds an index. This can take 5–10 seconds. Later starts take less than a second.
 
-### Uninstall
-
-```bash
-rm ~/bin/agents
-rm -rf ~/.cache/agents-hub
-rm -rf ~/git/iterm-agents-hub
-```
-
-agents-hub does not change Claude Code's settings or hooks, so there is nothing else to remove.
+agents-hub does not change Claude Code's settings or hooks, so an uninstall leaves nothing behind.
 
 ---
 
@@ -165,8 +164,8 @@ docs/superpowers design document and implementation plan
 
 | Problem | Fix |
 |---|---|
-| `agents: command not found` | Add `~/bin` to your `PATH` (installation step 3) |
-| The **Tab** column shows `—` for all sessions | Allow Automation for iTerm2 (installation step 5) |
+| `agents: command not found` | Option A: run `uv tool update-shell` and open a new tab. Option B: add `~/bin` to your `PATH` |
+| The **Tab** column shows `—` for all sessions | Allow Automation for iTerm2 (see **First start**) |
 | No live sessions show | Make sure that `ls ~/.claude/sessions/` shows `.json` files. You need Claude Code 2.1 or later |
 | Wrong or old data | Quit the hub, run `rm ~/.cache/agents-hub/index.json`, and start it again |
 | "agents hub is already running in another terminal" | The open hub runs outside iTerm. Close it there |
